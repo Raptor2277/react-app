@@ -1,23 +1,29 @@
-import logo from './logo.svg';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
+import React, { Suspense } from 'react';
+import AppConfig from './app-config';
+
+const Counter = React.lazy(() => import("./lib-counter"));
+const MainPage = React.lazy(() => import("./lib-main-page"));
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+
+      <h1>The api url is {AppConfig.API_URL}</h1>
+
+      <a href='/'>Main Page</a>
+      <a href='/counter'>Counter</a>
+
+      <Router>
+        <Suspense fallback={<div>Loading...</div>}>
+          <Routes>
+            <Route path="/" element={<MainPage></MainPage>}></Route>
+            <Route path="/counter" element={<Counter></Counter>}></Route>
+          </Routes>
+        </Suspense>
+      </Router>
+
     </div>
   );
 }
